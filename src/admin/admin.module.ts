@@ -14,7 +14,7 @@ import { JwtService } from '@nestjs/jwt';
 @Module({
   imports: [TypeOrmModule.forFeature([User, Role,AdminRepository, UserRepository])],
   controllers: [AdminController],
-  providers: [AdminService,AdminRepository,ResponseService,JwtService],
+  providers: [AdminService,AdminRepository,ResponseService,JwtService,UserRepository],
   exports:[AdminRepository,AdminService]
 
 })

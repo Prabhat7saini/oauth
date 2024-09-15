@@ -1,34 +1,4 @@
-// import { Logger, Module } from '@nestjs/common';
-// import { AuthService } from './auth.service';
-// import { UserModule } from '../user/user.module';
-// import { AdminModule } from '../admin/admin.module';
-// import { ResponseService } from '../utils/responses/ResponseService';
-// import { AuthController } from './auth.controller';
-// import { JwtModule, JwtService } from '@nestjs/jwt';
-// import { ConfigService } from '@nestjs/config';
-// import { AuthenticationGuard } from './guard/authenticaton.guard';
 
-// @Module({
-
-
-//   imports: [UserModule, AdminModule,JwtModule.registerAsync({
-//     useFactory: async (configService: ConfigService) => {
-//       const logger = new Logger('JwtModule'); // Create a Logger instance
-
-//       const secret = configService.get<string>('JWT_SECRET');
-//       logger.debug(`JWT Secret: ${secret}`); // Log the JWT secret (for debugging)
-
-//       return {
-//         secret,
-//       };
-//     },
-//     inject: [ConfigService],
-//   }),],
-//   controllers: [AuthController],
-//   providers: [AuthService,ResponseService,AuthenticationGuard,JwtService],
-//   exports: [AuthenticationGuard]
-// })
-// export class AuthModule {}
 import { Module } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -41,6 +11,10 @@ import { UserRepository } from 'src/user/repo/user.repository';
 import { AdminRepository } from 'src/admin/repo/admin.repository';
 import { ResponseService } from 'src/utils/responses/ResponseService';
 import { AuthorizationGuard } from './guard/authorization.guard';
+import { AuthRepository } from './repo/auth.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '../user/entities/user.entity';
+import { Role } from '../user/entities/role.entity';
 
 @Module({
   imports: [UserModule,AdminModule,
@@ -53,9 +27,9 @@ import { AuthorizationGuard } from './guard/authorization.guard';
         signOptions: { expiresIn: '60m' },
       }),
     }),
+    TypeOrmModule.forFeature([User, Role, AuthRepository, UserRepository])
   ],
-  // providers: [AuthService, AuthenticationGuard,UserRepository,AdminRepository],
-  providers: [AuthService, ResponseService, AuthenticationGuard, JwtService, AuthorizationGuard],
+  providers: [AuthService, ResponseService, AuthenticationGuard, JwtService, AuthorizationGuard, AuthRepository],
   controllers: [AuthController],
   exports: [AuthService, AuthenticationGuard, AuthorizationGuard], // Export if needed elsewhere
 })

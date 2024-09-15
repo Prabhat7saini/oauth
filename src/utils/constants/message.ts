@@ -11,13 +11,19 @@ export const ERROR_MESSAGES = {
     USER_NOT_FOUND: 'User not found',
     ID_REQUIRED: 'Id is required',
     USER_DELETION_FAILED: 'An unexpected error occurred while deleting the user',
-    USER_NOT_FOUND_BY_ID: (id: number) => `User with id ${id} not found`,
+    USER_NOT_FOUND_BY_ID: (id: string) => `User with id ${id} not found`,
     UNEXPECTED_ERROR: 'An unexpected error occurred',
     INVALID_CREDENTIALS: 'Invalid credentials',
     TOKEN_NOT_FOUND: 'Token not found',
     USER_INACTIVE:"Your account is inactive. Please contact support or reactivate your account.",
     ROLE_REQUIRED:"Role is required",
-    ROLE_ALREADY_EXISTS: 'Role already exists'
+    ROLE_ALREADY_EXISTS: 'Role already exists',
+    NOT_FOUND_OR_INACTIVE: (id: string) => `User with id ${id} not found or already inactive`,
+    NOT_FOUND_OR_ACTIVE: (id: string) => `User with id ${id} not found or already active`,
+    ADMIN_UPDATE_NOT_ALLOWED:"You are not allowed to update admin",
+    REGISTER_NOT_ALLOWED: 'You are not allowed to register as an admin.',
+    ROLE_NOT_FOUND_ERROR: (roleName: string) => `Role with name ${roleName} not found`
+
 };
 
 export const SUCCESS_MESSAGES = {
@@ -27,5 +33,7 @@ export const SUCCESS_MESSAGES = {
     USER_FETCHED_SUCCESSFULLY: 'User successfully fetched',
     USER_LOGIN_SUCCESSFULLY: 'User Login Successfully',
     ROLE_CREATED_SUCCESSFULLY: 'Role created successfully',
-   
+    USERS_FETCHED_SUCCESSFULLY:"Users successfully fetched",
+    USER_DEACTIVATED:"USER DEACTIVATED successfully",
+    USER_ACTIVATED:"USER ACTIVATED successfully", 
 };

@@ -5,7 +5,7 @@ import { Role } from "./role.entity";
 @Unique(["email"])
 export class User {
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column()
     email: string;
@@ -35,5 +35,5 @@ export class User {
 
     @ManyToMany(() => Role)
     @JoinTable({ name: 'user_roles' })
-    roles: Role;
+    roles: Role[];
 }

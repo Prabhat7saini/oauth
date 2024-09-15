@@ -17,7 +17,7 @@ export class AdminSignUpDto {
 
 
 
-    @IsString({ message: 'name  must be a string' })
+    @IsString({ message: 'Address  must be a string' })
     address: string
 
     @IsString({ message: 'Password must be a string' })
@@ -27,8 +27,15 @@ export class AdminSignUpDto {
 }
 
 
+export class RegisterDto extends AdminSignUpDto {
 
-export class LoginDto{
+    @IsString({ message: 'Role  must be a string' })
+    @IsNotEmpty({ message: 'Role is required' })
+    roleName: string
+}
+
+
+export class LoginDto {
     @IsEmail({}, { message: 'Email must be a valid email' })
     @IsNotEmpty({ message: 'Email is required' })
     email: string;
