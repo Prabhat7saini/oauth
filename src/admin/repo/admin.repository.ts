@@ -3,13 +3,12 @@ import { User } from '../../user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../utils/constants/message';
-import { AdminSignUpDto } from 'src/auth/dto/authDto';
 import { Role } from '../../user/entities/role.entity';
 import { BadRequestException, ConflictException, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
-import { ApiResponse } from 'src/utils/responses/api-response.dto';
-import { UserRepository } from 'src/user/repo/user.repository';
-import { ResponseService } from 'src/utils/responses/ResponseService';
-import { UpdateUserDto } from 'src/user/dto/userDto';
+import { ApiResponse } from '../../utils/responses/api-response.dto';
+import { UserRepository } from '../../user/repo/user.repository';
+import { ResponseService } from '../../utils/responses/ResponseService';
+import { UpdateUserDto } from '../../user/dto/userDto';
 
 export class AdminRepository {
     private readonly saltRounds = 10;
