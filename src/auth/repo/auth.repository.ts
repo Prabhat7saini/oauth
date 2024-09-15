@@ -28,6 +28,7 @@ export class AuthRepository {
 
         try {
             // Find the role entity corresponding to the given roleName
+            console.log("found")
             const roleEntity = await this.roleRepository.findOne({ where: { roleName } });
             if (!roleEntity) {
                 this.logger.warn(`Role '${roleName}' does not exist.`);
@@ -41,7 +42,7 @@ export class AuthRepository {
             const user = this.userRepository.create({
                 ...userData,
                 password: hashedPassword,
-                roles: [roleEntity],
+                role: roleEntity, // Updated to a single role
             });
             return await this.userRepository.save(user);
         } catch (error) {
@@ -72,7 +73,7 @@ export class AuthRepository {
             const user = this.userRepository.create({
                 ...adminData,
                 password: hashedPassword,
-                roles: [roleEntity],
+                role: roleEntity, // Updated to a single role
             });
             return await this.userRepository.save(user);
         } catch (error) {

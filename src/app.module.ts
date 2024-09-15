@@ -16,9 +16,10 @@ import { ResponseService } from './utils/responses/ResponseService';
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
-    envFilePath: ".local.env",
+    // envFilePath: ".local.env",
+    envFilePath: ".local1.env",
   }), DatabaseModule, UserModule, AuthModule, AdminModule],
   controllers: [AppController, UserController, AuthController, AdminController],
-  providers: [AppService,JwtService,ResponseService],
+  providers: [AppService, JwtService, ResponseService],
 })
-export class AppModule {}
+export class AppModule { }

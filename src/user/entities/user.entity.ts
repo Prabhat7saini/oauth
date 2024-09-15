@@ -1,4 +1,4 @@
-import { Column, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Role } from "./role.entity";
 
 @Entity('users')
@@ -16,7 +16,6 @@ export class User {
     @Column()
     age: string;
 
-    
     @Column()
     address: string;
 
@@ -28,12 +27,10 @@ export class User {
 
     @Column({ nullable: true })
     refreshToken: string;
+
     @DeleteDateColumn()
     deletedAt?: Date;
 
-
-
-    @ManyToMany(() => Role)
-    @JoinTable({ name: 'user_roles' })
-    roles: Role[];
+    @ManyToOne(() => Role, { nullable: true })
+    role: Role;
 }

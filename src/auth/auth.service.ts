@@ -103,7 +103,7 @@ export class AuthService {
             const { password: _, isActive, ...userWithoutSensitiveData } = existingUser;
 
             // Create a payload for the JWT token
-            const payload = { id: existingUser.id, role: existingUser.roles[0].roleName };
+            const payload = { id: existingUser.id, role: existingUser.role.roleName };
 
             // Generate an access token
             const accessToken = await this.generateToken(payload, '60m');

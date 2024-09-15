@@ -2,12 +2,10 @@ import { Repository } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../utils/constants/message';
+import { ERROR_MESSAGES } from '../../utils/constants/message';
 import { AdminSignUpDto } from 'src/auth/dto/authDto';
 import { Role } from '../../user/entities/role.entity';
 import { BadRequestException, ConflictException, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
-import { ApiResponse } from 'src/utils/responses/api-response.dto';
-import { UserRepository } from 'src/user/repo/user.repository';
 import { ResponseService } from 'src/utils/responses/ResponseService';
 import { UpdateUserDto } from 'src/user/dto/userDto';
 
@@ -20,13 +18,12 @@ export class AdminRepository {
         private readonly adminRepository: Repository<User>,
         @InjectRepository(Role)
         private readonly roleRepository: Repository<Role>,
-        private readonly userRepository: UserRepository,
         private readonly responseService: ResponseService
     ) { }
 
     /**
      * Creates a new role if it does not already exist.
-     * role - The name of the role to be created.
+     * @param role - The name of the role to be created.
      * @returns A string message if the role already exists or throws an InternalServerErrorException on failure.
      */
     async createRoles(role: string): Promise<void | string> {
@@ -59,10 +56,7 @@ export class AdminRepository {
                 return ERROR_MESSAGES.ROLE_NOT_FOUND_ERROR(roleName);
             }
 
-            const users = await this.adminRepository.createQueryBuilder('user')
-                .innerJoinAndSelect('user.roles', 'role')
-                .where('role.id = :roleId', { roleId: role.id })
-                .getMany();
+            const users = await this.adminRepository.find({ where: { role: role } });
             return users;
         } catch (error) {
             this.logger.error('An unexpected error occurred while fetching users:', error.message);
@@ -76,9 +70,8 @@ export class AdminRepository {
      * @returns A message indicating whether the user was deactivated or not found.
      */
     async deactivateUser(id: string): Promise<void | string> {
-
         try {
-            const result = await this.userRepository
+            const result = await this.adminRepository
                 .createQueryBuilder()
                 .update(User)
                 .set({ isActive: false })
@@ -89,8 +82,6 @@ export class AdminRepository {
                 this.logger.warn(`User with ID ${id} not found or already inactive.`);
                 return ERROR_MESSAGES.NOT_FOUND_OR_INACTIVE(id);
             }
-
-
         } catch (error) {
             this.logger.error(`Failed to deactivate user with ID ${id}: ${error.message}`);
             throw new InternalServerErrorException(error.message);
@@ -104,7 +95,7 @@ export class AdminRepository {
      */
     async activateUser(id: string): Promise<void | string> {
         try {
-            const result = await this.userRepository
+            const result = await this.adminRepository
                 .createQueryBuilder()
                 .update(User)
                 .set({ isActive: true })
@@ -115,8 +106,7 @@ export class AdminRepository {
                 this.logger.warn(`User with ID ${id} not found or already active.`);
                 return ERROR_MESSAGES.NOT_FOUND_OR_ACTIVE(id);
             }
-        }
-        catch (error) {
+        } catch (error) {
             this.logger.error(`Failed to activate user with ID ${id}: ${error.message}`);
             throw new InternalServerErrorException(error.message);
         }
@@ -125,24 +115,24 @@ export class AdminRepository {
     /**
      * Updates user information, but prevents updates to admin users.
      * @param id - The ID of the user to be updated.
-     * userData - The new user data to be applied.
+     * @param userData - The new user data to be applied.
      * @returns The updated user or an error message if the user is not found or is an admin.
      */
     async updateUserByAdmin(id: string, userData: UpdateUserDto): Promise<User | string> {
         try {
-            const user = await this.userRepository.findUser({ id });
+            const user = await this.adminRepository.findOne({ where: { id }, relations: ['role'] });
             if (!user) {
-                this.logger.warn(`inside the update by admin User with ID ${id} not found.`);
+                this.logger.warn(`User with ID ${id} not found.`);
                 return ERROR_MESSAGES.USER_NOT_FOUND;
             }
-            if (user.roles[0].roleName === 'admin') {
-                this.logger.warn(`Update not allowed for admin user `);
+            if (user.role && user.role.roleName === 'admin') {
+                this.logger.warn(`Update not allowed for admin user.`);
                 return ERROR_MESSAGES.ADMIN_UPDATE_NOT_ALLOWED;
             }
 
-            await this.userRepository.update(id, userData);
+            await this.adminRepository.update(id, userData);
 
-            const updatedUser = await this.userRepository.findUser({ id });
+            const updatedUser = await this.adminRepository.findOne({ where: { id }, relations: ['role'] });
             this.logger.log(`User with ID ${id} updated successfully.`);
             return updatedUser;
         } catch (error) {
@@ -151,12 +141,14 @@ export class AdminRepository {
         }
     }
 
-
-
-
+    /**
+     * Retrieves user by ID with sensitive information removed.
+     * @param id - The ID of the user to be retrieved.
+     * @returns The user entity without sensitive information.
+     */
     async getUserById(id: string): Promise<User> {
         try {
-            const user = await this.userRepository.findUser({ id });
+            const user = await this.adminRepository.findOne({ where: { id }, relations: ['role'] });
             if (user) {
                 delete user.refreshToken;
                 delete user.password;
@@ -164,8 +156,8 @@ export class AdminRepository {
             }
             return user;
         } catch (error) {
-            this.logger.error('Error fetching users:', error);
-            throw new Error(ERROR_MESSAGES.USER_FETCH_FAILED);
+            this.logger.error('Error fetching user:', error.message);
+            throw new InternalServerErrorException(ERROR_MESSAGES.USER_FETCH_FAILED);
         }
     }
 }
