@@ -1,4 +1,4 @@
-import { IsNumberString, IsOptional, IsString } from "class-validator";
+import { IsNumberString, IsOptional, IsPositive, IsString } from "class-validator";
 
 export class UpdateUserDto {
     @IsOptional()
@@ -11,5 +11,6 @@ export class UpdateUserDto {
 
     @IsOptional()
     @IsNumberString({}, { message: 'Age must be a number' })
+    @IsPositive({ message: 'Age must be a non-negative number' })
     age?: string;
 }

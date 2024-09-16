@@ -1,18 +1,15 @@
 import { Repository } from 'typeorm';
 import { User } from '../../user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcryptjs';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../utils/constants/message';
+import { ERROR_MESSAGES } from '../../utils/constants/message';
 import { Role } from '../../user/entities/role.entity';
 import {  InternalServerErrorException, Logger } from '@nestjs/common';
-import { ApiResponse } from '../../utils/responses/api-response.dto';
-import { UserRepository } from '../../user/repo/user.repository';
 import { ResponseService } from '../../utils/responses/ResponseService';
 import { UpdateUserDto } from '../../user/dto/userDto';
 
 
 export class AdminRepository {
-    private readonly saltRounds = 10;
+
     private readonly logger = new Logger(AdminRepository.name);
 
     constructor(
@@ -20,7 +17,7 @@ export class AdminRepository {
         private readonly adminRepository: Repository<User>,
         @InjectRepository(Role)
         private readonly roleRepository: Repository<Role>,
-        private readonly responseService: ResponseService
+
     ) { }
 
     /**

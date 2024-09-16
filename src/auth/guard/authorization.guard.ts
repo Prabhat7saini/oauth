@@ -17,16 +17,14 @@ export class AuthorizationGuard implements CanActivate {
             console.log(`this is the user role ${request.user.role}`)
 
             if (requiredRole !== request.user.role) {
-                throw new ForbiddenException(ERROR_MESSAGES.PROTECTED_ROUTE)
-                console.log(`required role does not match with user role`)
-                return false;
+                throw new ForbiddenException(ERROR_MESSAGES.PROTECTED_ROUTE);
             }
 
 
             return true
         } catch (error) {
             console.log(`error in side the user authorization`, error.message);
-            throw error;
+            return false;
         }
 
     }
