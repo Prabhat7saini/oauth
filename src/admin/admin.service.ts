@@ -112,6 +112,7 @@ export class AdminService {
         }
 
         try {
+
             const updatedUser = await this.adminRepository.updateUserByAdmin(id, userData);
             if (typeof updatedUser === 'string') {
                 return this.responseService.error(updatedUser);
@@ -132,6 +133,7 @@ export class AdminService {
             return this.responseService.error(ERROR_MESSAGES.ID_REQUIRED);
         }
         try {
+
             const user = await this.adminRepository.getUserById(id);
 
             if (!user) {
@@ -140,6 +142,7 @@ export class AdminService {
             return this.responseService.success(SUCCESS_MESSAGES.USER_FETCHED_SUCCESSFULLY, 200, user)
 
         } catch (error) {
+            this.logger.error("getUserFailed", error.message)
             return this.responseService.error(ERROR_MESSAGES.USER_FETCH_FAILED, 500)
         }
     }
