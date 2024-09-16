@@ -142,6 +142,7 @@ export class AdminService {
             return this.responseService.success(SUCCESS_MESSAGES.USER_FETCHED_SUCCESSFULLY, 200, user)
 
         } catch (error) {
+            this.logger.error("getUserFailed", error.message)
             return this.responseService.error(ERROR_MESSAGES.USER_FETCH_FAILED, 500)
         }
     }

@@ -1,5 +1,5 @@
-import { Injectable, Logger, BadRequestException, InternalServerErrorException } from '@nestjs/common';
-import { UserRepository } from 'src/user/repo/user.repository';
+import { Injectable, Logger, InternalServerErrorException } from '@nestjs/common';
+import { UserRepository } from '../user/repo/user.repository';
 import { AdminSignUpDto, LoginDto, RegisterDto } from './dto/authDto';
 import { ResponseService } from '../utils/responses/ResponseService';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../utils/constants/message';
@@ -100,13 +100,14 @@ export class AuthService {
             }
 
             // Prepare the user object excluding sensitive data
-            const { password: _, isActive, ...userWithoutSensitiveData } = existingUser;
+            const { password: _, isActive, deletedAt,refreshToken,...userWithoutSensitiveData } = existingUser;
 
             // Create a payload for the JWT token
             const payload = { id: existingUser.id, role: existingUser.role.roleName };
 
             // Generate an access token
             const accessToken = await this.generateToken(payload, '60m');
+
             return this.responseService.success(SUCCESS_MESSAGES.USER_LOGIN_SUCCESSFULLY, 200, { user: userWithoutSensitiveData, accessToken });
         } catch (error) {
             this.logger.error('Login failed', error.message, error.stack);

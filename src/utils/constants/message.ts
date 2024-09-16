@@ -22,7 +22,8 @@ export const ERROR_MESSAGES = {
     NOT_FOUND_OR_ACTIVE: (id: string) => `User with id ${id} not found or already active`,
     ADMIN_UPDATE_NOT_ALLOWED:"You are not allowed to update admin",
     REGISTER_NOT_ALLOWED: 'You are not allowed to register as an admin.',
-    ROLE_NOT_FOUND_ERROR: (roleName: string) => `Role with name ${roleName} not found`
+    ROLE_NOT_FOUND_ERROR: (roleName: string) => `Role with name ${roleName} not found`,
+    PROTECTED_ROUTE:"you do not have access to this route"
 
 };
 
