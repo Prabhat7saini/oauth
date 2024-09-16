@@ -19,7 +19,7 @@ export class AdminService {
 
     /**
      * Creates a new role.
-     * @param role - The role to be created.
+     * role - The role to be created.
      * @returns ApiResponse - Response indicating the success or failure of the operation.
      */
     async createRoles(role: string): Promise<ApiResponse> {
@@ -127,6 +127,11 @@ export class AdminService {
         }
     }
 
+    /**
+     * get a user by admin.
+     * @param id - The ID of the user to fetch.
+     * @returns ApiResponse - Response indicating the success or failure of the operation.
+     */
 
     async getUser(id: string): Promise<ApiResponse> {
         if (!id) {

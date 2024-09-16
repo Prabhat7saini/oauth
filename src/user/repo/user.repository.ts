@@ -22,7 +22,7 @@ export class UserRepository extends Repository<User> {
 
     /**
      * Finds a user by email or ID.
-     * @param params - Object containing optional email and/or id to search for.
+     * Object containing optional email and/or id to search for.
      * @returns The user if found, otherwise null.
      * @throws Error if neither email nor id is provided.
      */
@@ -56,10 +56,10 @@ export class UserRepository extends Repository<User> {
 
     /**
      * Updates user information based on the provided ID and user data.
-     * @param id - ID of the user to be updated.
-     * @param userData - Data to update the user with.
+     * id - ID of the user to be updated.
+     * userData - Data to update the user with.
      * @returns The updated user.
-     * @throws Error if the user is not found or the update fails.
+     *  Error if the user is not found or the update fails.
      */
     async updateUser(id: string, userData: UpdateUserDto): Promise<User> {
         if (!id) {
@@ -90,9 +90,8 @@ export class UserRepository extends Repository<User> {
 
     /**
      * Soft deletes a user by setting the deletedAt field.
-     * @param id - ID of the user to be soft deleted.
+       param id - ID of the user to be soft deleted.
      * @returns Boolean indicating success or failure of the operation.
-     * @throws Error if an unexpected error occurs during the operation.
      */
     async softDeleteUser(id: string): Promise<boolean> {
         try {

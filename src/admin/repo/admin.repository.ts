@@ -25,7 +25,7 @@ export class AdminRepository {
 
     /**
      * Creates a new role if it does not already exist.
-     * @param role - The name of the role to be created.
+     * role - The name of the role to be created.
      * @returns A string message if the role already exists or throws an InternalServerErrorException on failure.
      */
     async createRoles(role: string): Promise<void | string> {
@@ -68,7 +68,7 @@ export class AdminRepository {
 
     /**
      * Deactivates a user by setting their 'isActive' status to false.
-     * @param id - The ID of the user to be deactivated.
+     *  id - The ID of the user to be deactivated.
      * @returns A message indicating whether the user was deactivated or not found.
      */
     async deactivateUser(id: string): Promise<void | string> {
@@ -92,7 +92,7 @@ export class AdminRepository {
 
     /**
      * Activates a user by setting their 'isActive' status to true.
-     * @param id - The ID of the user to be activated.
+     *  id - The ID of the user to be activated.
      * @returns A message indicating whether the user was activated or not found.
      */
     async activateUser(id: string): Promise<void | string> {
@@ -116,8 +116,8 @@ export class AdminRepository {
 
     /**
      * Updates user information, but prevents updates to admin users.
-     * @param id - The ID of the user to be updated.
-     * @param userData - The new user data to be applied.
+     *  id - The ID of the user to be updated.
+     *  userData - The new user data to be applied.
      * @returns The updated user or an error message if the user is not found or is an admin.
      */
     async updateUserByAdmin(id: string, userData: UpdateUserDto): Promise<User | string> {
@@ -145,7 +145,7 @@ export class AdminRepository {
 
     /**
      * Retrieves user by ID with sensitive information removed.
-     * @param id - The ID of the user to be retrieved.
+     *  id - The ID of the user to be retrieved.
      * @returns The user entity without sensitive information.
      */
     async getUserById(id: string): Promise<User> {

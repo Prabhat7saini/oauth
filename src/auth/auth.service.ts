@@ -23,7 +23,7 @@ export class AuthService {
 
     /**
      * Registers a new admin user.
-     * @param adminUser - The details of the admin to be registered.
+     * adminUser - The details of the admin to be registered.
      * @returns An ApiResponse indicating the result of the registration operation.
      */
     async adminRegister(adminUser: AdminSignUpDto): Promise<ApiResponse> {
@@ -36,7 +36,7 @@ export class AuthService {
 
             // Create and save the new admin user
             const user = await this.authRepository.createAdmin(adminUser);
-            return this.responseService.success(SUCCESS_MESSAGES.USER_CREATED_SUCCESSFULLY, 201, user);
+            return this.responseService.success(SUCCESS_MESSAGES.USER_CREATED_SUCCESSFULLY, 201);
         } catch (error) {
             this.logger.error('Admin registration failed', error.message, error.stack);
             return this.responseService.error(ERROR_MESSAGES.UNEXPECTED_ERROR, 500);
@@ -45,7 +45,7 @@ export class AuthService {
 
     /**
      * Registers a new user.
-     * @param userData - The details of the user to be registered.
+     * userData - The details of the user to be registered.
      * @returns An ApiResponse indicating the result of the registration operation.
      */
     async register(userData: RegisterDto): Promise<ApiResponse> {
@@ -66,7 +66,7 @@ export class AuthService {
             if (typeof user === 'string') {
                 return this.responseService.error(user);
             }
-            return this.responseService.success(SUCCESS_MESSAGES.USER_CREATED_SUCCESSFULLY, 201, user);
+            return this.responseService.success(SUCCESS_MESSAGES.USER_CREATED_SUCCESSFULLY, 201);
         } catch (error) {
             this.logger.error('User registration failed', error.message, error.stack);
             return this.responseService.error(ERROR_MESSAGES.UNEXPECTED_ERROR, 500);
@@ -75,7 +75,7 @@ export class AuthService {
 
     /**
      * Logs in a user and generates an access token.
-     * @param loginData - The login credentials (email and password) for authentication.
+     * loginData - The login credentials (email and password) for authentication.
      * @returns An ApiResponse with the login result and access token if successful.
      */
     async login(loginData: LoginDto): Promise<ApiResponse> {
@@ -117,8 +117,8 @@ export class AuthService {
 
     /**
      * Generates a JWT token.
-     * @param payload - The payload to be encoded in the JWT token.
-     * @param expiresIn - The expiration time of the token (e.g., '60m').
+     * payload - The payload to be encoded in the JWT token.
+     * expiresIn - The expiration time of the token .
      * @returns The generated JWT token as a string.
      */
     private async generateToken(payload: object, expiresIn: string): Promise<string> {

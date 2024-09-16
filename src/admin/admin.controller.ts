@@ -69,9 +69,8 @@ export class AdminController {
 
     /**
      * Endpoint for an admin to update user details.
-     * Requires admin authentication and authorization.
      * @param data Contains the ID of the user to be updated.
-     * @param userData The new user data to be applied.
+     *  userData The new user data to be applied.
      * @returns An ApiResponse indicating success or failure.
      */
     @Role('admin')
